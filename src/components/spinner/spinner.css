@@ -55,18 +55,18 @@
   left: 20px;
   border-radius: 50%;
   border: 8px solid #000;
-  border-color: #3d7ec0 transparent #3d7ec0 transparent;
-  -webkit-animation: lds-double-ring 1.5s linear infinite;
-  animation: lds-double-ring 1.5s linear infinite;
+  border-color: #1beac0 transparent #1beac0 transparent;
+  -webkit-animation: lds-double-ring 1.8s linear infinite;
+  animation: lds-double-ring 1.8s linear infinite;
 }
 .lds-double-ring div:nth-child(2) {
   width: 140px;
   height: 140px;
   top: 30px;
   left: 30px;
-  border-color: transparent #cc4545 transparent #cc4545;
-  -webkit-animation: lds-double-ring_reverse 1.5s linear infinite;
-  animation: lds-double-ring_reverse 1.5s linear infinite;
+  border-color: transparent #acffee transparent #acffee;
+  -webkit-animation: lds-double-ring_reverse 1.8s linear infinite;
+  animation: lds-double-ring_reverse 1.8s linear infinite;
 }
 .lds-double-ring {
   width: 77px !important;
