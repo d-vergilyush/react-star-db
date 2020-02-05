@@ -13,13 +13,19 @@ export default class ItemList extends Component {
   };
 
   componentDidMount() {
+    this.loadPeopleList();
+  }
+
+  onPeopleListLoaded = peopleList => {
+    this.setState({
+      peopleList
+    });
+  };
+
+  loadPeopleList = () => {
     this.swapiService
       .getAllPeople()
-      .then(peopleList =>
-        this.setState({
-          peopleList
-        })
-    );
+      .then(this.onPeopleListLoaded);
   }
 
   renderItems(arr) {
