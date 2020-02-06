@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './people-page.css';
+import "./people-page.css";
 
 import ItemList from "../item-list";
 import PersonDetails from "../person-details";
@@ -10,13 +10,13 @@ export default class PeoplePage extends Component {
   state = {
     selectedPersonId: null,
     hasError: false
-  }
+  };
 
-  onPersonSelected = (selectedPersonId) => {
+  onPersonSelected = selectedPersonId => {
     this.setState({
       selectedPersonId
-    })
-  }
+    });
+  };
 
   componentDidCatch(error) {
     this.setState({
@@ -27,9 +27,9 @@ export default class PeoplePage extends Component {
   render() {
     const { selectedPersonId, hasError } = this.state;
 
-  if(hasError) {
-    return <ErrorIndicator />
-  };
+    if (hasError) {
+      return <ErrorIndicator />;
+    }
 
     return (
       <div className="row mb2">
@@ -40,6 +40,6 @@ export default class PeoplePage extends Component {
           <PersonDetails personId={selectedPersonId} />
         </div>
       </div>
-    )
+    );
   }
 }
