@@ -1,9 +1,22 @@
 .item-list {
+  padding: 1rem;
   margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  background-color: #303030;
 }
 
 .item-list .list-group-item {
   cursor: pointer;
+  border-right-width: 0;
+  border-left-width: 0;
+}
+
+.item-list .list-group-item:first-child {
+  border-top-width: 0;
+}
+
+.item-list .list-group-item:last-child {
+  border-bottom-width: 0;
 }
 
 .item-list .list-group-item:hover {
