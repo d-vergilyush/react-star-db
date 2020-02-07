@@ -2,13 +2,14 @@
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.25rem;
-  background-color: #303030;
+  background-color: #333333;
 }
 
 .item-list .list-group-item {
   cursor: pointer;
   border-right-width: 0;
   border-left-width: 0;
+  background-color: initial;
 }
 
 .item-list .list-group-item:first-child {
