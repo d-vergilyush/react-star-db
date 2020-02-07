@@ -11,7 +11,6 @@ import ErrorIndicator from "../error-indicator";
 import ItemList from "../item-list";
 import PersonDetails from "../person-details";
 
-
 export default class App extends Component {
   swapiService = new SwapiService();
 
@@ -27,11 +26,11 @@ export default class App extends Component {
   }
 
   render() {
-  const { hasError } = this.state; 
+    const { hasError } = this.state;
 
-  if(hasError) {
-    return <ErrorIndicator />
-  };
+    if (hasError) {
+      return <ErrorIndicator />;
+    }
 
     return (
       <div>
@@ -41,10 +40,14 @@ export default class App extends Component {
 
         <div className="row mb2">
           <div className="col-md-6">
-            <ItemList 
+            <ItemList
               onItemSelected={this.onPersonSelected}
               getData={this.swapiService.getAllPlanets}
-              renderItem={({ name, diameter }) => <span>{name} (<em>{diameter}</em>)</span> } />
+            >
+              {({ name, diameter }) => (
+                  `${name} (${diameter})`
+              )}
+            </ItemList>
           </div>
           <div className="col-md-6">
             <PersonDetails personId={this.state.selectedPersonId} />
@@ -53,10 +56,14 @@ export default class App extends Component {
 
         <div className="row mb2">
           <div className="col-md-6">
-            <ItemList 
+            <ItemList
               onItemSelected={this.onPersonSelected}
               getData={this.swapiService.getAllStarships}
-              renderItem={({ name, model }) => <span>{name} (<em>{model}</em>)</span> } />
+            >
+              {({ name, model }) => (
+                  `${name} (${model})`
+              )}
+          </ItemList>
           </div>
           <div className="col-md-6">
             <PersonDetails personId={this.state.selectedPersonId} />
