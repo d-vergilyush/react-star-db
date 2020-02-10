@@ -7,69 +7,56 @@ import SwapiService from "../../services/swapi-service";
 import Header from "../header";
 import RandomPlanet from "../random-planet";
 import PeoplePage from "../people-page";
-import ErrorIndicator from "../error-indicator";
-import ItemList from "../item-list";
-import PersonDetails from "../person-details";
+import ErrorBoundary from "../error-boundary"
 
 export default class App extends Component {
   swapiService = new SwapiService();
 
   state = {
-    selectedPersonId: null,
-    hasError: false
+    selectedPersonId: null
   };
 
-  componentDidCatch() {
-    this.setState({
-      hasError: true
-    });
-  }
-
   render() {
-    const { hasError } = this.state;
-
-    if (hasError) {
-      return <ErrorIndicator />;
-    }
-
     return (
-      <div>
-        <Header />
-        <RandomPlanet />
-        <PeoplePage />
+      <ErrorBoundary>
+        <div>
+          <Header />
+          <RandomPlanet />
+          <PeoplePage />
 
-        {/* <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllPlanets}
-            >
-              {({ name, diameter }) => (
-                  `${name} (${diameter})`
-              )}
+          {/* <div className="row mb2">
+            <div className="col-md-6">
+              <ItemList
+                onItemSelected={this.onPersonSelected}
+                getData={this.swapiService.getAllPlanets}
+              >
+                {({ name, diameter }) => (
+                    `${name} (${diameter})`
+                )}
+              </ItemList>
+            </div>
+            <div className="col-md-6">
+              <PersonDetails personId={this.state.selectedPersonId} />
+            </div>
+          </div>
+
+          <div className="row mb2">
+            <div className="col-md-6">
+              <ItemList
+                onItemSelected={this.onPersonSelected}
+                getData={this.swapiService.getAllStarships}
+              >
+                {({ name, model }) => (
+                    `${name} (${model})`
+                )}
             </ItemList>
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPersonId} />
-          </div>
+            </div>
+            <div className="col-md-6">
+              <PersonDetails personId={this.state.selectedPersonId} />
+            </div>
+          </div> */}
         </div>
-
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList
-              onItemSelected={this.onPersonSelected}
-              getData={this.swapiService.getAllStarships}
-            >
-              {({ name, model }) => (
-                  `${name} (${model})`
-              )}
-          </ItemList>
-          </div>
-          <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPersonId} />
-          </div>
-        </div> */}
-      </div>
+      </ErrorBoundary>
     );
   }
 }
