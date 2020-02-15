@@ -46,6 +46,7 @@ export default class ItemDetails extends Component {
     }
 
     const timerId = setTimeout(() => {
+
       this.setState({
         loading: true
       });
@@ -71,8 +72,8 @@ export default class ItemDetails extends Component {
     const { item, image, loading } = this.state;
     const { children } = this.props;
 
-    const hasMsg = !this.state.item && !loading;
-    const hasData = this.state.item && !loading;
+    const hasMsg = !item && !loading;
+    const hasData = item && !loading;
     const itemBodyProps = { item, image, children };
 
     const msg = hasMsg ? <Message /> : null;
