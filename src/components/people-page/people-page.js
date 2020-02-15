@@ -4,8 +4,7 @@ import "./people-page.css";
 
 import SwapiService from "../../services/swapi-service";
 
-import ItemList from "../item-list";
-import ItemDetails, { Record } from "../item-details";
+import { PersonList, PersonDetails } from "../sw-components";
 import ErrorBoundary from "../error-boundary";
 import Row from "../row";
 
@@ -24,27 +23,12 @@ export default class PeoplePage extends Component {
 
   render() {
     const { selectedItemId } = this.state;
-    const { getPerson, getPersonImage } = this.swapiService;
 
-    const itemList = (
-      <ItemList
-        onItemSelected={this.onItemSelected}
-      >
-        {({name}) => <span>{name}</span>}
-      </ItemList>
-    );
+    const itemList = <PersonList onItemSelected={this.onItemSelected} />;
 
     const itemDetails = (
       <ErrorBoundary>
-        <ItemDetails 
-          itemId={selectedItemId} 
-          getData={getPerson}
-          getImageUrl={getPersonImage}
-        >
-          <Record field="gender" label="Gender" />
-          <Record field="birthYear" label="Birth year" />
-          <Record field="eyeColor" label="Eye color" />
-        </ItemDetails>
+        <PersonDetails itemId={selectedItemId} />
       </ErrorBoundary>
     );
 
