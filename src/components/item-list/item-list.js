@@ -1,15 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 
 import "./item-list.css";
 
-import Spinner from "../spinner";
-import SwapiService from "../../services/swapi-service"
+import { withData } from "../hoc-helpers"
+import SwapiService from "../../services/swapi-service";
 
 const { getAllPeople } = new SwapiService();
 
 const ItemList = ({ onItemSelected, data, children}) => {
-
-  
   
   const items = data.map((item) => {
     const { id } = item;
@@ -31,39 +29,6 @@ const ItemList = ({ onItemSelected, data, children}) => {
       {items}
     </ul>
   );
-}
-
-const withData = (View, getData) => {
-  return class extends Component {
-
-    state = {
-      data: null
-    };
-  
-    componentDidMount() {
-      this.loadData();
-    }
-  
-    onDataLoaded = data => {
-      this.setState({
-        data
-      });
-    };
-  
-    loadData = () => {
-      getData().then(this.onDataLoaded);
-    };
-
-    render() {
-      const { data } = this.state;
-
-      if(!data) {
-        return <Spinner />;
-      }
-
-      return <View {...this.props} data={data} />
-    }
-  }
 }
 
 export default withData(ItemList, getAllPeople);
