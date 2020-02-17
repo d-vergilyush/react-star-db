@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
@@ -11,14 +12,18 @@ class RandomPlanet extends Component {
 
   static defaultProps = {
     updateInterval: 10000
-  };
+  }
+
+  static propTypes = {
+    updateInterval: PropTypes.number
+  }
 
   state = {
     planet: {},
     image: null,
     loading: true,
     error: false
-  };
+  }
 
   componentDidMount() {
     const { updateInterval } = this.props;
@@ -47,14 +52,14 @@ class RandomPlanet extends Component {
       image,
       loading: false
     });
-  };
+  }
 
   onError = err => {
     this.setState({
       loading: false,
       error: true
     });
-  };
+  }
 
   updatePlanet = () => {
     const id = Math.floor(Math.random() * 17) + 2;
@@ -63,7 +68,7 @@ class RandomPlanet extends Component {
     getData(id)
       .then(this.onPlanetLoaded)
       .catch(this.onError);
-  };
+  }
 
   render() {
     const { planet, image, loading, error } = this.state;
