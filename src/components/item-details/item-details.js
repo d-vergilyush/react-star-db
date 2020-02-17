@@ -3,7 +3,6 @@ import React, { Component, Fragment } from "react";
 
 import "./item-details.css";
 
-import swapiService from '../../services/swapi-service';
 import Spinner from "../spinner";
 
 const Record = ({ item, field, label }) => {
@@ -20,7 +19,6 @@ export {
 };
 
 export default class ItemDetails extends Component {
-  swapiService = new swapiService();
 
   state= {
     item: null,
@@ -33,7 +31,9 @@ export default class ItemDetails extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.itemId !== prevProps.itemId) {
+    if(this.props.itemId !== prevProps.itemId ||
+      this.props.getData !== prevProps.getData ||
+      this.props.getImageUrl !== prevProps.getImageUrl) {
       this.updateItem();
     }
   }
