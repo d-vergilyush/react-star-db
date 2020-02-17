@@ -3,7 +3,6 @@ import React from "react";
 import "./item-list.css";
 
 const ItemList = ({ onItemSelected, data, children: renderLabel}) => {
-  debugger;
   const items = data.map((item) => {
     const { id } = item;
     const label = renderLabel(item);
