@@ -3,6 +3,7 @@ import React from "react";
 import "./item-list.css";
 
 const ItemList = ({ onItemSelected, data, children: renderLabel}) => {
+  
   const items = data.map((item) => {
     const { id } = item;
     const label = renderLabel(item);
@@ -24,5 +25,9 @@ const ItemList = ({ onItemSelected, data, children: renderLabel}) => {
     </ul>
   );
 }
+
+ItemList.defaultProps = {
+  onItemSelected: () => {}
+};
 
 export default ItemList;
