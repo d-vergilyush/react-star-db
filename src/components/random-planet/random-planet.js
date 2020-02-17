@@ -3,15 +3,14 @@ import React, { Component, Fragment } from "react";
 
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
-import SwapiService from "../../services/swapi-service";
+import { withSwapiService } from "../hoc-helpers";
 
 import "./random-planet.css";
 
-export default class RandomPlanet extends Component {
-  swapiService = new SwapiService();
-
+class RandomPlanet extends Component {
   state = {
     planet: {},
+    image: null,
     loading: true,
     error: false
   };
@@ -21,40 +20,55 @@ export default class RandomPlanet extends Component {
     this.interval = setInterval(this.updatePlanet, 2500);
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.getData !== prevProps.getData ||
+      this.props.getImageUrl !== prevProps.getImageUrl
+    ) {
+      this.updatePlanet();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
   onPlanetLoaded = planet => {
+    const image = this.props.getImageUrl(planet);
+
     this.setState({
       planet,
+      image,
       loading: false
     });
   };
 
   onError = err => {
     this.setState({
-      error: true,
-      loading: false
+      loading: false,
+      error: true
     });
   };
 
   updatePlanet = () => {
     const id = Math.floor(Math.random() * 17) + 2;
-    this.swapiService
-      .getPlanet(id)
+    const { getData } = this.props;
+
+    getData(id)
       .then(this.onPlanetLoaded)
       .catch(this.onError);
   };
 
   render() {
-    const { planet, loading, error } = this.state;
+    const { planet, image, loading, error } = this.state;
 
     const hasData = !loading && !error;
 
     const errorMessage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = hasData ? <PlanetView planet={planet} /> : null;
+    const content = hasData ? (
+      <PlanetView planet={planet} image={image} />
+    ) : null;
 
     return (
       <div className="random-planet jumbotron rounded">
@@ -66,15 +80,11 @@ export default class RandomPlanet extends Component {
   }
 }
 
-const PlanetView = ({ planet }) => {
-  const { id, name, population, rotationPeriod, diameter } = planet;
-
+const PlanetView = ({ planet, image }) => {
+  const { name, population, rotationPeriod, diameter } = planet;
   return (
     <Fragment>
-      <img
-        className="planet-image"
-        src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
-      />
+      <img className="planet-image" src={image} />
       <div>
         <h4>{name}</h4>
         <ul className="list-group list-group-flush">
@@ -95,3 +105,12 @@ const PlanetView = ({ planet }) => {
     </Fragment>
   );
 };
+
+const mapMethodsToProps = swapiService => {
+  return {
+    getData: swapiService.getPlanet,
+    getImageUrl: swapiService.getPlanetImage
+  };
+};
+
+export default withSwapiService(mapMethodsToProps)(RandomPlanet);
