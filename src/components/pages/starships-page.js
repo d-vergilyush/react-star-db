@@ -1,31 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
+import { withRouter } from "react-router-dom";
 
-import SwapiService from "../../services/swapi-service";
+import { StarshipList } from "../sw-components";
 
-import { StarshipList, StarshipDetails } from "../sw-components";
-import Row from "../row";
+const StarsipsPage = ({ history }) => {
+  return (
+    <StarshipList 
+      onItemSelected={(itemId) => {
+        history.push(`/starships/${itemId}`);
+      }} />
+  );
+};
 
-export default class StarsipsPage extends Component {
-  swapiService = new SwapiService();
-
-  state = {
-    selectedItemId: null
-  };
-
-  onItemSelected = selectedItemId => {
-    this.setState({
-      selectedItemId
-    });
-  };
-
-  render() {
-    const { selectedItemId } = this.state;
-
-    return (
-      <Row
-        left={<StarshipList onItemSelected={this.onItemSelected} />}
-        right={<StarshipDetails itemId={selectedItemId} />}
-      />
-    );
-  }
-}
+export default withRouter(StarsipsPage);
