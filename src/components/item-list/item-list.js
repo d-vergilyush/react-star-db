@@ -32,7 +32,7 @@ ItemList.defaultProps = {
 };
 
 ItemList.propTypes = {
-  onItemSelected: PropTypes.number,
+  onItemSelected: PropTypes.func,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   children: PropTypes.func.isRequired
 }
