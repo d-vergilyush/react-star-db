@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import Spinner from "../spinner";
@@ -8,88 +8,58 @@ import { withSwapiService } from "../hoc-helpers";
 
 import "./random-planet.css";
 
-class RandomPlanet extends Component {
+const RandomPlanet = ({ getData, getImageUrl, updateInterval }) => {
+  const [planet, setPlanet] = useState({});
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  static defaultProps = {
-    updateInterval: 10000
-  }
-
-  static propTypes = {
-    updateInterval: PropTypes.number
-  }
-
-  state = {
-    planet: {},
-    image: null,
-    loading: true,
-    error: false
-  }
-
-  componentDidMount() {
-    const { updateInterval } = this.props;
-    this.updatePlanet();
-    this.interval = setInterval(this.updatePlanet, updateInterval);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.getData !== prevProps.getData ||
-      this.props.getImageUrl !== prevProps.getImageUrl
-    ) {
-      this.updatePlanet();
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  onPlanetLoaded = planet => {
-    const image = this.props.getImageUrl(planet);
-
-    this.setState({
-      planet,
-      image,
-      loading: false
-    });
-  }
-
-  onError = err => {
-    this.setState({
-      loading: false,
-      error: true
-    });
-  }
-
-  updatePlanet = () => {
+  const updatePlanet = useCallback(() => {
     const id = Math.floor(Math.random() * 17) + 2;
-    const { getData } = this.props;
 
     getData(id)
-      .then(this.onPlanetLoaded)
-      .catch(this.onError);
+      .then(planet => {
+        setPlanet(planet);
+        setImage(getImageUrl(planet));
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
+  }, [getData, getImageUrl]);
+
+  useEffect(() => {
+    const intervalId = setInterval(updatePlanet, updateInterval);
+    updatePlanet();
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [getData, getImageUrl, updateInterval, updatePlanet]);
+
+  if (error) {
+    return <ErrorIndicator />;
   }
 
-  render() {
-    const { planet, image, loading, error } = this.state;
+  if (loading) {
+    return <Spinner />;
+  }
 
-    const hasData = !loading && !error;
-
-    const errorMessage = error ? <ErrorIndicator /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = hasData ? (
+  return (
+    <div className="random-planet jumbotron rounded">
       <PlanetView planet={planet} image={image} />
-    ) : null;
+    </div>
+  );
+};
 
-    return (
-      <div className="random-planet jumbotron rounded">
-        {errorMessage}
-        {spinner}
-        {content}
-      </div>
-    );
-  }
-}
+RandomPlanet.defaultProps = {
+  updateInterval: 6000
+};
+
+RandomPlanet.propTypes = {
+  updateInterval: PropTypes.number
+};
 
 const PlanetView = ({ planet, image }) => {
   const { name, population, rotationPeriod, diameter } = planet;
