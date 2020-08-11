@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 
 import { StarshipList } from "../sw-components";
 
@@ -10,4 +9,4 @@ const StarsipsPage = ({ history }) => {
   );
 };
 
-export default withRouter(StarsipsPage);
+export default StarsipsPage;
