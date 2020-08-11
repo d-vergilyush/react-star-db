@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 
-import SwapiService from "../../services/swapi-service";
-
 import { PlanetList, PlanetDetails } from "../sw-components";
 import Row from "../row";
 
 export default class PlanetsPage extends Component {
-  swapiService = new SwapiService();
 
   state = {
     selectedItemId: null
