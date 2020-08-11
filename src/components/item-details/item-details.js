@@ -42,6 +42,10 @@ export default class ItemDetails extends Component {
     const { itemId, getData, getImageUrl } = this.props;
 
     if (!itemId) {
+      this.setState({
+        item: null,
+        image: null
+      });
       return;
     }
 
